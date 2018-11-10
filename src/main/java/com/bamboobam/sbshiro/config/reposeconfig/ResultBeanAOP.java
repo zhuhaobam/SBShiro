@@ -1,4 +1,4 @@
-package com.bamboobam.sbshiro.config.resultconfig;
+package com.bamboobam.sbshiro.config.reposeconfig;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

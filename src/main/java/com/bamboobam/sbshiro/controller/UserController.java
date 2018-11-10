@@ -1,8 +1,8 @@
 package com.bamboobam.sbshiro.controller;
 
-import com.bamboobam.sbshiro.config.resultconfig.CheckException;
-import com.bamboobam.sbshiro.config.resultconfig.ResultBean;
-import com.bamboobam.sbshiro.entity.Role;
+import com.bamboobam.sbshiro.config.reposeconfig.CheckException;
+import com.bamboobam.sbshiro.config.reposeconfig.ResultBean;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.UTable;
 import com.bamboobam.sbshiro.entity.User;
 import com.bamboobam.sbshiro.persistance.PermissionRepository;
 import com.bamboobam.sbshiro.persistance.RoleRepository;
@@ -28,11 +28,31 @@ public class UserController {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @GetMapping(value = "findname")
+    public ResultBean findByName(String name) {
+        UTable uTable = (UTable) userRepository.findByName(name);
+        return new ResultBean(new User(uTable));
+    }
+
+    @GetMapping(value = "findlikename")
+    public ResultBean findByNameLike(String name) {
+        List<UTable> tables = (List<UTable>) userRepository.findByNameLike(name);
+        List<User> list = new ArrayList<>();
+        for (UTable utable : tables) {
+            list.add(new User(utable));
+        }
+        return new ResultBean(list);
+    }
+
     //http://localhost:8080/user/findall
     @GetMapping(value = "findall")
     public ResultBean findAll() {
-        List<User> userList = (List<User>) userRepository.findAll();
-        return new ResultBean(userList);
+        List<UTable> tables = (List<UTable>) userRepository.findAll();
+        List<User> list = new ArrayList<>();
+        for (UTable utable : tables) {
+            list.add(new User(utable));
+        }
+        return new ResultBean(list);
     }
 
 
@@ -48,23 +68,12 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "save")
-    public ResultBean saveOrUpdate(Long id, String name, String pwd, Long cid) {
+    public ResultBean saveOrUpdate(Long id, String name, String pwd, Long[] cid) {
         if (id.compareTo(1L) == -1) {
             throw new CheckException("Long类型参数最小为1");
         }
-        Role role = (Role) roleRepository.findOne(cid);
-        if (null == role) {
-            throw new CheckException("role不存在cid:" + cid);
-        }
-        List<Role> manys = new ArrayList<>();
-        User _User = (User) userRepository.findOne(id);
-        if (null == _User) {
-            manys.add(role);
-        } else if (!_User.getRoles().contains(role)) {
-            manys.addAll(_User.getRoles());
-            manys.add(role);
-        }
-        User orUpdate = (User) userRepository.saveOrUpdate(new User(id, name, pwd, manys));
+        UTable uTable = (UTable) userRepository.saveOrUpdate(new UTable(id, name, pwd, "", cid));
+        User orUpdate = new User(uTable);
         return new ResultBean(orUpdate);
     }
 }

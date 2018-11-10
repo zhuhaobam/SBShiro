@@ -1,12 +1,16 @@
 package com.bamboobam.sbshiro.config.repositoryconfig.db;
 
-import com.bamboobam.sbshiro.entity.Permission;
-import com.bamboobam.sbshiro.entity.Role;
-import com.bamboobam.sbshiro.entity.User;
+import com.bamboobam.sbshiro.config.Constant;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.PTable;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.RTable;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.UTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Bmdb【Bamboo Map Database】
@@ -39,22 +43,28 @@ public class Bmdb {
     private static Map<Long, Object> User_Table = new HashMap<>();
 
     static {
-        Permission p1 = new Permission(1L, "pname1", "/purl1");
-        Permission p2 = new Permission(2L, "pname2", "/purl2");
-        Permission p3 = new Permission(3L, "pname3", "/purl3");
-        Permission_Table.put(1L, p1);
-        Permission_Table.put(2L, p2);
-        Permission_Table.put(3L, p3);
+        PTable permissionBaseEntity1 = new PTable(1L, "red", "/red");
+        PTable permissionBaseEntity2 = new PTable(2L, "green", "/green");
+        PTable permissionBaseEntity3 = new PTable(3L, "blue", "/blue");
+        PTable permissionBaseEntity4 = new PTable(4L, "purp", "/purp");
+        Permission_Table.put(1L, permissionBaseEntity1);
+        Permission_Table.put(2L, permissionBaseEntity2);
+        Permission_Table.put(3L, permissionBaseEntity3);
+        Permission_Table.put(4L, permissionBaseEntity4);
         //-------
-        Role r1 = new Role(1L, "role1", Arrays.asList(p1, p2));
-        Role r2 = new Role(2L, "role2", Arrays.asList(p3));
-        Role_Table.put(1L, r1);
-        Role_Table.put(2L, r2);
+        RTable roleBaseEntity1 = new RTable(1L, "admin", new Long[]{1L, 2L});
+        RTable roleBaseEntity2 = new RTable(2L, "vip", new Long[]{3L});
+        RTable roleBaseEntity3 = new RTable(3L, "simple", new Long[]{4L});
+        Role_Table.put(1L, roleBaseEntity1);
+        Role_Table.put(2L, roleBaseEntity2);
+        Role_Table.put(3L, roleBaseEntity3);
         //-------
-        User u1 = new User(1L, "admin", "123456", Arrays.asList(r1));
-        User u2 = new User(2L, "lala", "123456", Arrays.asList(r2));
-        User_Table.put(1L, u1);
-        User_Table.put(2L, u2);
+        UTable userBaseEntity1 = new UTable(1L, "admin", Constant.MD5PWD, Constant.SALT, new Long[]{1L});
+        UTable userBaseEntity2 = new UTable(2L, "vip", Constant.MD5PWD, Constant.SALT, new Long[]{2L});
+        UTable userBaseEntity3 = new UTable(3L, "simple", Constant.MD5PWD, Constant.SALT, new Long[]{3L});
+        User_Table.put(1L, userBaseEntity1);
+        User_Table.put(2L, userBaseEntity2);
+        User_Table.put(3L, userBaseEntity3);
 
     }
 
@@ -77,47 +87,9 @@ public class Bmdb {
         Map<Long, Object> _Result_Table = null;
         if (tablename.equals("Permission")) {
             Permission_Table.put(id, entity);
-            Map<Long, Object> _Temp_User_Table = new HashMap<>();
-            Map<Long, Object> _Temp_Role_Table = new HashMap<>();
-            _Temp_User_Table.putAll(User_Table);
-            _Temp_Role_Table.putAll(Role_Table);
-            //先更新直属上级
-            for (Map.Entry<Long, Object> entry : _Temp_Role_Table.entrySet()) {
-                Role role = (Role) entry.getValue();
-                List<Permission> manys = new ArrayList<>();
-                for (Permission ps : role.getPermissions()) {
-                    manys.add((Permission) Permission_Table.get(ps.getId()));
-                }
-                role.setPermissions(manys);
-                Role_Table.put(role.getId(), role);
-            }
-            //间接上级
-            for (Map.Entry<Long, Object> entry : _Temp_User_Table.entrySet()) {
-                User user = (User) entry.getValue();
-                List<Role> manys = new ArrayList<>();
-                for (Role rl : user.getRoles()) {
-                    manys.add((Role) Role_Table.get(rl.getId()));
-                }
-                user.setRoles(manys);
-                User_Table.put(user.getId(), user);
-            }
-            _Temp_User_Table = null;//建议GC回收
-            _Temp_Role_Table = null;//建议GC回收
             _Result_Table = Permission_Table;
         } else if (tablename.equals("Role")) {
-            Map<Long, Object> _Temp_User_Table = new HashMap<>();
             Role_Table.put(id, entity);
-            _Temp_User_Table.putAll(User_Table);
-            for (Map.Entry<Long, Object> entry : _Temp_User_Table.entrySet()) {
-                User user = (User) entry.getValue();
-                List<Role> manys = new ArrayList<>();
-                for (Role rl : user.getRoles()) {
-                    manys.add((Role) Role_Table.get(rl.getId()));
-                }
-                user.setRoles(manys);
-                User_Table.put(user.getId(), user);
-            }
-            _Temp_User_Table = null;//建议GC回收
             _Result_Table = Role_Table;
         } else if (tablename.equals("User")) {
             User_Table.put(id, entity);
@@ -137,5 +109,62 @@ public class Bmdb {
         }
         return object;
     }
+
+    public static Object SelectByName(String tablename, String name) {
+        Object object = null;
+        if (tablename.equals("Permission")) {
+            for (Map.Entry entt : Permission_Table.entrySet()) {
+                PTable table = (PTable) entt.getValue();
+                if (table.getPermissionname().equals(name)) {
+                    object = table;
+                }
+            }
+        } else if (tablename.equals("Role")) {
+            for (Map.Entry entt : Role_Table.entrySet()) {
+                RTable table = (RTable) entt.getValue();
+                if (table.getName().equals(name)) {
+                    object = table;
+                }
+            }
+        } else if (tablename.equals("User")) {
+            for (Map.Entry entt : User_Table.entrySet()) {
+                UTable table = (UTable) entt.getValue();
+                if (table.getUsername().equals(name)) {
+                    object = table;
+                }
+            }
+        }
+        return object;
+    }
+
+
+    public static List<Object> findByNameLike(String tablename, String name) {
+        List<Object> objects =  new ArrayList<>();
+        if (tablename.equals("Permission")) {
+            for (Map.Entry entt : Permission_Table.entrySet()) {
+                PTable table = (PTable) entt.getValue();
+                if (table.getPermissionname().indexOf(name) >=0) {
+                    objects.add(table);
+                }
+            }
+        } else if (tablename.equals("Role")) {
+            for (Map.Entry entt : Role_Table.entrySet()) {
+                RTable table = (RTable) entt.getValue();
+                if (table.getName().indexOf(name) >=0) {
+                    objects.add(table);
+                }
+            }
+        } else if (tablename.equals("User")) {
+            for (Map.Entry entt : User_Table.entrySet()) {
+                UTable table = (UTable) entt.getValue();
+                if (table.getUsername().indexOf(name) >=0) {
+                    objects.add(table);
+                }
+            }
+        }
+        return objects;
+    }
+
+
 
 }

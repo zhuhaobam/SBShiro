@@ -1,28 +1,34 @@
 package com.bamboobam.sbshiro.entity;
 
-import java.util.List;
+import com.bamboobam.sbshiro.config.Constant;
+import com.bamboobam.sbshiro.config.repositoryconfig.db.Bmdb;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.RTable;
+import com.bamboobam.sbshiro.config.repositoryconfig.table.UTable;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class User {
 
     private Long id;
     private String username;
     private String password;
-    private List<Role> roles;
+    private String salt;// 加密盐值
+    private Set<Role> roles;
+    public static Bmdb BMDB = Bmdb.getInstance();
 
     public User() {
     }
 
-    public User(User user) {
-        this.id = user.id;
-        this.username = user.username;
-        this.password = user.password;
-        this.roles = user.roles;
-    }
-
-    public User(Long id, String username, String password, List<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+    public User(UTable uTable) {
+        this.id = uTable.getId();
+        this.username = uTable.getUsername();
+        this.password = Constant.MD5PWD;
+        this.salt = Constant.SALT;
+        Set<Role> roles = new HashSet<>();
+        for (long aid : uTable.getRoles()) {
+            roles.add(new Role((RTable) BMDB.SelectById(Constant.T_ROLE, aid)));
+        }
         this.roles = roles;
     }
 
@@ -50,21 +56,31 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public String toString() {
+        User user = new User((UTable) BMDB.SelectById(Constant.T_USER, id));
         return "{\"User\":{" +
                 "\"id\":\"" + id +
                 "\", username\":\"" + username +
                 "\", password\":\"" + password +
-                "\", roles\":" + roles +
+                "\", salt\":\"" + salt +
+                "\", roles\":" + user.getRoles() +
                 "}}";
     }
 }

@@ -1,5 +1,9 @@
 package com.bamboobam.sbshiro.entity;
 
+import com.bamboobam.sbshiro.config.repositoryconfig.table.PTable;
+
+import java.util.Objects;
+
 public class Permission {
 
     private Long id;
@@ -9,16 +13,10 @@ public class Permission {
     public Permission() {
     }
 
-    public Permission(Permission permission) {
-        this.id = permission.id;
-        this.permissionname = permission.permissionname;
-        this.url = permission.url;
-    }
-
-    public Permission(Long id, String permissionname, String url) {
-        this.id = id;
-        this.permissionname = permissionname;
-        this.url = url;
+    public Permission(PTable pTable) {
+        this.id = pTable.getId();
+        this.permissionname = pTable.getPermissionname();
+        this.url = pTable.getUrl();
     }
 
     public Long getId() {
@@ -43,6 +41,21 @@ public class Permission {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(permissionname, that.permissionname) &&
+                Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, permissionname, url);
     }
 
     @Override

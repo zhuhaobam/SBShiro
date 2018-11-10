@@ -1,4 +1,4 @@
-package com.bamboobam.sbshiro.config.resultconfig;
+package com.bamboobam.sbshiro.config.reposeconfig;
 
 /**
  * 捕获异常，并捕捉封装返回resultbean

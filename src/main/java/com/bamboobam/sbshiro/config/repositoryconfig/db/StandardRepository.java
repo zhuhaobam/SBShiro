@@ -1,7 +1,7 @@
 package com.bamboobam.sbshiro.config.repositoryconfig.db;
 
+import com.bamboobam.sbshiro.config.reposeconfig.CheckException;
 import com.bamboobam.sbshiro.config.repositoryconfig.ormconfig.AbstractRepository;
-import com.bamboobam.sbshiro.config.resultconfig.CheckException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,5 +108,25 @@ public class StandardRepository extends AbstractRepository {
         String entityName = refBeanName();
         return BMDB.SelectById(entityName, id);
     }
+
+
+    @Override
+    public Object findByName(String name) {
+        if (null == name && name.equals(" ")) {
+            throw new CheckException("String类型name参数不为空");
+        }
+        String entityName = refBeanName();
+        return BMDB.SelectByName(entityName, name);
+    }
+
+    @Override
+    public List<Object> findByNameLike(String name) {
+        if (null == name && name.equals(" ")) {
+            throw new CheckException("String类型name参数不为空");
+        }
+        String entityName = refBeanName();
+        return BMDB.findByNameLike(entityName, name);
+    }
+
 
 }

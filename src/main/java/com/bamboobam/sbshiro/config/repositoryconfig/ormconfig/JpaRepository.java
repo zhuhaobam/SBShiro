@@ -11,5 +11,4 @@ import java.io.Serializable;
  */
 public interface JpaRepository<T, ID extends Serializable> extends CrudRepository {
 
-
 }

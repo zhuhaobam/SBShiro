@@ -12,10 +12,13 @@ public abstract class AbstractRepository {
 
     public abstract Object saveOrUpdate(Object entity);
 
-
     public abstract List<Object> findAll();
 
     public abstract Object findOne(Long id);
+
+    public abstract Object findByName(String name);
+
+    public abstract List<Object> findByNameLike(String name);
 
    /*
 
