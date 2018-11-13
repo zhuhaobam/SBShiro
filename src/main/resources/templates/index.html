@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/global.css"/>
+    <link rel="stylesheet" href="/css/flyglobal.css"/>
+</head>
+<body>
+<div class="fly-header layui-bg-black">
+    <div class="layui-container"><a class="fly-logo" href="javascript:;"><img src="/img/logo.png"
+                                                                              alt="layui"> </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-chanpin" style="top: 1px;"></i>权限实验</a>
+                <dl class="layui-nav-child fly-nav-child">
+                    <dd><a href="javascript:;">layuiAdmin</a></dd>
+                    <hr>
+                    <dd><a href="javascript:;">LayIM</a></dd>
+                </dl>
+            <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-ui"></i>学习</a></li>
+        </ul>
+        <ul class="layui-nav fly-nav-user">
+            <li class="layui-nav-item"><a class="fly-nav-avatar" href="javascript:;" id="LAY_header_avatar"> <cite
+                    class="layui-hide-xs">花一世</cite> <img src="/img/666666.jpg"> </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">用户中心</a></dd>
+                    <hr style="margin: 5px 0;">
+                    <dd><a href="/logout" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item "><a href="javascript:;"> <i class="layui-icon">&#xe612;</i> 用户中心 </a></li>
+        <li class="layui-nav-item  layui-this"><a href="javascript:;"> <i class="layui-icon">&#xe620;</i> 基本设置 </a></li>
+    </ul>
+    <div class="site-tree-mobile layui-hide"><i class="layui-icon">&#xe602;</i></div>
+    <div class="site-mobile-shade"></div>
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li class="layui-this"><a href="/user/product/">我购买的产品</a></li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 5px 0;">
+                <div class="layui-tab-item layui-show">
+                    <form action="" class="layui-form">
+                        <div class="layui-form-item" style="margin: 10px 0 0;"><label class="layui-form-label"
+                                                                                      style="width: auto; padding-right: 5px;">别名筛选：</label>
+                            <div class="layui-input-inline"><input type="text" name="alias" class="layui-input"
+                                                                   value=""></div>
+                            <button type="submit" class="layui-btn">搜索</button>
+                        </div>
+                    </form>
+                    <table id="LAY_productList"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fly-footer"><p><a href="javascript:;">敲来福.com</a>
+    <p class="fly-union"><span>由来：当幸福来敲门</span></p></div>
+<script src="/layui/layui.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>

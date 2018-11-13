@@ -53,13 +53,13 @@ public class StandardRepository extends AbstractRepository {
         }
         Method dataMethod2 = null != paramcls ? standardCrudRepository.getClass().getMethod(method, paramcls) : standardCrudRepository.getClass().getMethod(method);
         Object tobj = null != args ? dataMethod2.invoke(standardCrudRepository, args) : dataMethod2.invoke(standardCrudRepository);
-        if (null != args) {
+       /* if (null != args) {
             logger.info(String.format("Myself_Bmdb_HQL:%s-%s\nI_ARGS:%s\nR_JSON:%s", method, refBeanName(),
                     null != args ? Arrays.asList(args) : "", null != tobj ? tobj.toString() : ""));
         } else {
             logger.info(String.format("Myself_Bmdb_HQL:%s-%s\nR_JSON:%s", method, refBeanName(),
                     null != tobj ? tobj.toString() : ""));
-        }
+        }*/
         return tobj;
     }
 

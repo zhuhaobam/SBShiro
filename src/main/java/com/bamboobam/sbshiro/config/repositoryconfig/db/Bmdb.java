@@ -59,9 +59,9 @@ public class Bmdb {
         Role_Table.put(2L, roleBaseEntity2);
         Role_Table.put(3L, roleBaseEntity3);
         //-------
-        UTable userBaseEntity1 = new UTable(1L, "admin", Constant.MD5PWD, Constant.SALT, new Long[]{1L});
-        UTable userBaseEntity2 = new UTable(2L, "vip", Constant.MD5PWD, Constant.SALT, new Long[]{2L});
-        UTable userBaseEntity3 = new UTable(3L, "simple", Constant.MD5PWD, Constant.SALT, new Long[]{3L});
+        UTable userBaseEntity1 = new UTable(1L, "admin", Constant.getPwd("admin","123456"), Constant.ALLSALT,Boolean.FALSE, new Long[]{1L});
+        UTable userBaseEntity2 = new UTable(2L, "vip", Constant.getPwd("vip","123456"), Constant.ALLSALT,Boolean.FALSE, new Long[]{2L});
+        UTable userBaseEntity3 = new UTable(3L, "simple", Constant.getPwd("simple","123456"), Constant.ALLSALT,Boolean.FALSE, new Long[]{3L});
         User_Table.put(1L, userBaseEntity1);
         User_Table.put(2L, userBaseEntity2);
         User_Table.put(3L, userBaseEntity3);

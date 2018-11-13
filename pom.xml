@@ -41,6 +41,24 @@
             <version>1.4.0</version>
         </dependency>
 
+       <!-- Thymeleaf是一个Java XML / XHTML / HTML5模板引擎，可以在Web和非Web环境中工作。
+        它更适合在基于MVC的Web应用程序的视图层提供XHTML / HTML5，但它甚至可以在脱机环境中处理任何XML文件。
+        它提供完整的Spring Framework集成。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+      <!--  3.1 之前的 Servlet API 构件叫做 servlet-api-xxx.jar
+        3.1 及之后的Servlet API 构件改名为javax.servlet-api-xxx.jar-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--可帮助开发人员设计，构建，记录和使用RESTful Web服务。
+        虽然大多数用户通过Swagger UI工具识别Swagger，
+        但Swagger工具集包括对自动化文档，代码生成和测试用例生成的支持。-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -52,10 +70,25 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!--JAXB也提供了将XML实例文档反向生成Java对象树的方法，并能将Java对象树的内容重新写到XML实例文档-->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
+        </dependency>
+
+        <!-- JSON库 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.51</version>
+        </dependency>
+
+        <!-- html页面标签补偿器 -->
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
         </dependency>
 
         <dependency>
@@ -63,6 +96,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

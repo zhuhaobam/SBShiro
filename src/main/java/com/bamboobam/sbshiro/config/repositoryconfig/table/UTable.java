@@ -6,16 +6,18 @@ public class UTable {
     private String username;
     private String password;
     private String salt;
+    private Boolean locked;
     private Long[] roles;
 
     public UTable() {
     }
 
-    public UTable(Long id, String username, String password, String salt, Long[] roles) {
+    public UTable(Long id, String username, String password, String salt,Boolean locked, Long[] roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.salt = salt;
+        this.locked = locked;
         this.roles = roles;
     }
 
@@ -33,6 +35,10 @@ public class UTable {
 
     public String getSalt() {
         return salt;
+    }
+
+    public Boolean getLocked() {
+        return locked;
     }
 
     public Long[] getRoles() {

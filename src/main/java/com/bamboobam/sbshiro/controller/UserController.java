@@ -1,5 +1,6 @@
 package com.bamboobam.sbshiro.controller;
 
+import com.bamboobam.sbshiro.config.Constant;
 import com.bamboobam.sbshiro.config.reposeconfig.CheckException;
 import com.bamboobam.sbshiro.config.reposeconfig.ResultBean;
 import com.bamboobam.sbshiro.config.repositoryconfig.table.UTable;
@@ -57,7 +58,7 @@ public class UserController {
 
 
     /**
-     * http://localhost:8080/user/save?id=1&name=admin&pwd=123456&cid=1
+     * http://localhost:8080/user/save?id=5&name=admin&pwd=123456&salt=tt&locked=true&cid=1,2,3
      * ----------------------------------------------------------------
      * http://localhost:8080/user/save?id=2&name=lala&pwd=123456&cid=2
      *
@@ -68,12 +69,14 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "save")
-    public ResultBean saveOrUpdate(Long id, String name, String pwd, Long[] cid) {
+    public ResultBean saveOrUpdate(Long id, String name, String pwd, String salt, Boolean locked, Long[] cid) {
         if (id.compareTo(1L) == -1) {
             throw new CheckException("Long类型参数最小为1");
         }
-        UTable uTable = (UTable) userRepository.saveOrUpdate(new UTable(id, name, pwd, "", cid));
+        UTable uTable = (UTable) userRepository.saveOrUpdate(new UTable(id, name, Constant.getPwd(name, pwd, salt), salt, locked, cid));
         User orUpdate = new User(uTable);
         return new ResultBean(orUpdate);
     }
+
+
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>用户登录</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/global.css"/>
+    <link rel="stylesheet" href="/css/flyglobal.css/">
+</head>
+<body>
+<div class="fly-header layui-bg-black">
+    <div class="layui-container"><a class="fly-logo" href="javascript:;"><img src="/img/logo.png"
+                                                                              alt="layui"> </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-chanpin" style="top: 1px;"></i>权限实验</a>
+                <dl class="layui-nav-child fly-nav-child">
+                    <dd><a href="javascript:;">layuiAdmin</a></dd>
+                    <hr>
+                    <dd><a href="javascript:;">LayIM</a></dd>
+                </dl>
+            <li class="layui-nav-item"><a href="javascript:;"><i class="iconfont icon-ui"></i>学习</a></li>
+        </ul>
+        <ul class="layui-nav fly-nav-user">
+            <li class="layui-nav-item"><a class="iconfont icon-touxiang layui-hide-xs" href="/login"></a></li>
+            <li class="layui-nav-item"><a href="/login">登入</a></li>
+            <li class="layui-nav-item"><a href="/reg">注册</a></li>
+            <span class="layui-nav-bar" style="left: 24px; top: 55px; width: 0px; opacity: 0;"></span></ul>
+    </div>
+</div>
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title">
+                <li class="layui-this">登入</li>
+                <li><a href="/reg">注册</a></li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <blockquote class="site-text layui-elem-quote"> 提示信息：<span th:text="${msg}"></span></blockquote>
+                        <!-- -&#45;&#45;-->
+                        <form class="layui-form layui-form-pane" action="/login" method="post">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="username" lay-verify="required" placeholder="请输入"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">请填写用户名</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" name="password" placeholder="请输入密码" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">请填写密码</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-submit="" lay-filter="submitlogin">提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </form>
+                        <!-- -&#45;&#45;-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fly-footer"><p><a href="javascript:;">敲来福.com</a>
+    <p class="fly-union"><span>由来：当幸福来敲门</span></p></div>
+<script src="/layui/layui.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>

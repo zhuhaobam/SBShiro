@@ -14,6 +14,7 @@ public class User {
     private String username;
     private String password;
     private String salt;// 加密盐值
+    private Boolean locked = Boolean.FALSE;
     private Set<Role> roles;
     public static Bmdb BMDB = Bmdb.getInstance();
 
@@ -23,8 +24,9 @@ public class User {
     public User(UTable uTable) {
         this.id = uTable.getId();
         this.username = uTable.getUsername();
-        this.password = Constant.MD5PWD;
-        this.salt = Constant.SALT;
+        this.password = uTable.getPassword();
+        this.salt = uTable.getSalt();
+        this.locked = uTable.getLocked();
         Set<Role> roles = new HashSet<>();
         for (long aid : uTable.getRoles()) {
             roles.add(new Role((RTable) BMDB.SelectById(Constant.T_ROLE, aid)));
@@ -64,6 +66,14 @@ public class User {
         this.salt = salt;
     }
 
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -80,6 +90,7 @@ public class User {
                 "\", username\":\"" + username +
                 "\", password\":\"" + password +
                 "\", salt\":\"" + salt +
+                "\", locked\":\"" + locked +
                 "\", roles\":" + user.getRoles() +
                 "}}";
     }
